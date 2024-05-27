@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Clicking Cat Game</title>
+    <script src="https://pixijs.download/release/pixi.js"></script>
+
+    <!-- found here, if not using CDN "./node_modules/@pixi/sound/dist/pixi-sound.js" -->
+    <script src="https://unpkg.com/@pixi/sound/dist/pixi-sound.js"></script>
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      // Create a PixiJS application
+      const app = new PIXI.Application();
+      await app.init({ backgroundColor: 0xffffff, resizeTo: window });
+
+      document.body.appendChild(app.canvas);
+
+      // Load the pop cat images
+      const popCatTexture = await PIXI.Assets.load(
+        'https://i.postimg.cc/59LrcqKF/Popcat-png.png'
+      );
+      const popCatOpenTexture = await PIXI.Assets.load(
+        'https://i.postimg.cc/ncxPnjNS/Popcat-Wow-png.png'
+      );
+
+      // Load the sound effect
+      PIXI.sound.add(
+        'pop_sound',
+        'https://cors-anywhere.herokuapp.com/https://www.myinstants.com/media/sounds/pop-cat-original-meme_3ObdYkj.mp3'
+      );
+
+      // Create the pop cat sprite
+      const popCatSprite = new PIXI.Sprite(popCatTexture);
+      popCatSprite.anchor.set(0.5);
+      popCatSprite.x = app.screen.width / 2;
+      popCatSprite.y = app.screen.height / 2;
+      popCatSprite.width = 400;
+      popCatSprite.height = 400 * (900 / 800);
+
+      popCatSprite.interactive = true;
+      popCatSprite.buttonMode = true;
+      app.stage.addChild(popCatSprite);
+
+      // Create a text object for displaying the score
+      const scoreText = new PIXI.Text({
+        text: 'Score: 0',
+        fontFamily: 'Arial',
+        fontSize: 24,
+        fill: 0x000000,
+      });
+      scoreText.x = 20;
+      scoreText.y = 20;
+      app.stage.addChild(scoreText);
+
+      // Keep track of the score
+      let score = 0;
+
+      // Function to handle the click event on the pop cat sprite
+      function handleClick() {
+        popCatSprite.texture = popCatOpenTexture;
+
+        // Play the click sound
+        PIXI.sound.play('pop_sound');
+
+        // Increment the score
+        score++;
+        scoreText.text = `Score: ${score}`;
+      }
+
+      // Function to handle the mouse release event
+      function handleMouseRelease() {
+        popCatSprite.texture = popCatTexture;
+      }
+
+      // Add the click event listener to the pop cat sprite
+      popCatSprite.on('pointerdown', handleClick);
+
+      // Add the mouse release event listener to the pop cat sprite
+      popCatSprite.on('pointerup', handleMouseRelease);
+
+      // Add the mouse release event listener to the application
+      app.canvas.addEventListener('pointerup', handleMouseRelease);
+    </script>
+  </body>
+</html>
