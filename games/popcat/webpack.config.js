@@ -18,6 +18,7 @@ module.exports = {
       patterns: [
         { from: 'assets', to: 'assets' },
         { from: 'index.html' },
+        { from: 'favicon', to: 'favicon' },
       ]
     }),
   ],
@@ -45,8 +46,21 @@ module.exports = {
             loader: 'file-loader',
             options: {
               name: '[name].[ext]',
-              outputPath: 'assets/', // Place files in dist/assets
-              publicPath: 'assets/', // Public URL address of the output files
+              outputPath: 'assets/',
+              publicPath: 'assets/',
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|ico|webmanifest)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'favicon/',
+              publicPath: 'favicon/',
             },
           },
         ],
