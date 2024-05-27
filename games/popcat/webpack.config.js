@@ -8,7 +8,7 @@ module.exports = {
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: 'dist/'
   },
   optimization: {
     runtimeChunk: 'single'
@@ -16,7 +16,7 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: 'assets', to: 'assets'},
+        { from: 'assets', to: 'assets' },
         { from: 'index.html' },
       ]
     }),
@@ -60,8 +60,10 @@ module.exports = {
     static: {
       directory: path.join(__dirname, 'dist')
     },
-    compress: true,
-    port: 9000
+    port: 9000,
+    historyApiFallback: {
+      index: 'dist/index.html'
+    },
   },
   mode: 'development'
 };
